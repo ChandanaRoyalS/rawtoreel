@@ -1,0 +1,11 @@
+{
+  "_comment": "Single words the transcriber gets wrong, fixed before cutting and captioning. Keys are matched case-insensitively.",
+  "replace": {
+    "rawtoreal": "rawtoreel",
+    "hyper frames": "HyperFrames",
+    "hyperframes": "HyperFrames",
+    "whisper": "Whisper",
+    "youtube": "YouTube",
+    "tiktok": "TikTok"
+  }
+}

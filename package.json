@@ -1,0 +1,9 @@
+{
+  "name": "rawtoreel-render",
+  "private": true,
+  "description": "Node side of rawtoreel: HyperFrames renders the graphics overlay.",
+  "dependencies": {
+    "gsap": "3.14.2",
+    "hyperframes": "^0.8.164"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "tiktok",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "reframe": "crop",
+  "max_duration_s": 180,
+  "captions": { "mode": "low", "font_size": 66, "max_words_per_line": 4, "max_lines": 2, "highlight": true, "margin_v": 520 },
+  "graphics": { "style": "hook", "title_card": true, "lower_third": false, "chapter_cards": false, "chapter_every_s": 20, "safe_top": 260, "safe_bottom": 560 },
+  "thumbnail": false,
+  "video_crf": 21,
+  "audio_bitrate": "160k"
+}

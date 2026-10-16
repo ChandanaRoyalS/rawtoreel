@@ -1,0 +1,20 @@
+# pipeline working files (keep the folder, not the media)
+projects/*
+!projects/.gitkeep
+outputs/*
+!outputs/.gitkeep
+sample/*.mp4
+music/*
+!music/README.md
+!music/.gitkeep
+
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.venv/
+.DS_Store

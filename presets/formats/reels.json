@@ -1,0 +1,13 @@
+{
+  "name": "reels",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "reframe": "blur-pad",
+  "max_duration_s": 90,
+  "captions": { "mode": "centered", "font_size": 72, "max_words_per_line": 4, "max_lines": 2, "highlight": true, "margin_v": 0 },
+  "graphics": { "style": "cards", "title_card": true, "lower_third": false, "chapter_cards": true, "chapter_every_s": 15, "safe_top": 220, "safe_bottom": 420 },
+  "thumbnail": false,
+  "video_crf": 20,
+  "audio_bitrate": "160k"
+}

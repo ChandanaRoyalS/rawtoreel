@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rawtoreel"
+version = "0.1.0"
+description = "Raw clip in, finished reel out: a 7-step automated video-editing pipeline."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Chandana Sorakundla" }]
+dependencies = [
+    "faster-whisper>=1.0",
+    "pydantic>=2.0",
+    "typer>=0.12",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+rawtoreel = "rawtoreel.cli:app"
+
+[tool.setuptools.packages.find]
+include = ["rawtoreel*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["B008"]  # typer.Option in defaults is the typer idiom
+
+[tool.ruff.lint.per-file-ignores]
+"rawtoreel/render/captions.py" = ["E501"]  # ASS header lines are long by spec
+"rawtoreel/render/hyperframes.py" = ["E501"]  # generated CSS/JS lines
+

@@ -1,0 +1,13 @@
+{
+  "name": "youtube",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "reframe": "scale",
+  "max_duration_s": null,
+  "captions": { "mode": "none", "font_size": 56, "max_words_per_line": 6, "max_lines": 2, "highlight": false, "margin_v": 120 },
+  "graphics": { "style": "glass", "title_card": true, "lower_third": true, "chapter_cards": true, "chapter_every_s": 25, "safe_top": 100, "safe_bottom": 160 },
+  "thumbnail": true,
+  "video_crf": 19,
+  "audio_bitrate": "192k"
+}

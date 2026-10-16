@@ -1,0 +1,17 @@
+{
+  "name": "default",
+  "font_family": "DejaVu Sans",
+  "accent": "#ff4d6d",
+  "accent_2": "#ffd166",
+  "ink": "#ffffff",
+  "paper": "#0b0f14",
+  "caption_fill": "#ffffff",
+  "caption_highlight": "#ffd166",
+  "caption_outline": "#000000",
+  "caption_shadow": true,
+  "title_in_s": 0.4,
+  "title_hold_s": 3.2,
+  "lower_third_at_s": 5.0,
+  "lower_third_hold_s": 4.5,
+  "chapter_hold_s": 2.4
+}
