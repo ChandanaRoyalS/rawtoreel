@@ -36,17 +36,18 @@ def _chapter_text(segment_text: str, max_words: int = 5) -> str:
 
 
 def plan_beats(transcript_cut: dict, fmt: FormatPreset, style: StylePreset, *, title: str,
-               speaker: str | None, role: str | None) -> list[dict]:
+               speaker: str | None, role: str | None, subtitle: str | None = None,
+               speech: bool = True) -> list[dict]:
     g = fmt.graphics
     duration = transcript_cut["duration"]
     beats: list[dict] = []
     if g.title_card and duration > style.title_in_s + style.title_hold_s:
         beats.append({"type": "title", "start": style.title_in_s, "duration": style.title_hold_s,
-                      "text": title, "sub": None})
+                      "text": title, "sub": subtitle})
     if g.lower_third and speaker and duration > style.lower_third_at_s + style.lower_third_hold_s:
         beats.append({"type": "lower_third", "start": style.lower_third_at_s,
                       "duration": style.lower_third_hold_s, "name": speaker, "role": role})
-    if g.chapter_cards:
+    if g.chapter_cards and speech:
         last = style.title_in_s + style.title_hold_s if g.title_card else 0.0
         segs = transcript_cut["segments"]
         for i, seg in enumerate(segs):
@@ -81,7 +82,8 @@ def run(job: Job, fmt: FormatPreset, style: StylePreset, *, render: bool = True)
     transcript_cut = read_json(job.transcript_cut)
     m = job.read_manifest()
     beats = plan_beats(transcript_cut, fmt, style, title=job.title,
-                       speaker=m.get("speaker"), role=m.get("role"))
+                       speaker=m.get("speaker"), role=m.get("role"), subtitle=m.get("subtitle"),
+                       speech=m["steps"].get("rough_cut", {}).get("speech", True))
     if job.notes.exists():
         beats = _apply_notes(beats, read_json(job.notes))
     plan = {"job": job.name, "format": fmt.name, "width": fmt.width, "height": fmt.height,

@@ -82,7 +82,8 @@ class StylePreset(BaseModel):
 class RoughCutSettings(BaseModel):
     """Knobs for the automatic cut. Defaults are conservative on purpose."""
 
-    model: str = "small"
+    engine: Literal["faster-whisper", "parakeet"] = "faster-whisper"
+    model: str = "small"  # faster-whisper size: tiny, base, small, medium, large-v3
     language: str | None = None
     filler_words: list[str] = Field(
         default_factory=lambda: ["um", "uh", "umm", "uhh", "erm", "hmm", "mm", "ah"]
@@ -94,6 +95,7 @@ class RoughCutSettings(BaseModel):
     repeat_window_s: float = 12.0
     min_segment_s: float = 0.4
     pad_s: float = 0.06
+    min_speech_density: float = 0.25  # words per second below which a clip is treated as non-speech
 
 
 def _load_json(path: Path) -> dict:

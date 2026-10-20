@@ -24,15 +24,15 @@ def _cached_transcript(job: Job, raw: Path, settings: RoughCutSettings) -> dict:
     sha = file_hash(raw)
     if job.transcript.exists():
         t = read_json(job.transcript)
-        if t.get("_raw_sha") == sha and t.get("_model") == settings.model:
+        if t.get("_raw_sha") == sha and t.get("_model") == f"{settings.engine}:{settings.model}":
             console.log("transcript cached")
             return t
     with tempfile.TemporaryDirectory() as tmp:
         wav = extract_audio(raw, Path(tmp) / "audio.wav")
         t = transcribe(wav, model=settings.model, language=settings.language,
-                       corrections=load_caption_corrections())
+                       corrections=load_caption_corrections(), engine=settings.engine)
     t["_raw_sha"] = sha
-    t["_model"] = settings.model
+    t["_model"] = f"{settings.engine}:{settings.model}"
     write_json(job.transcript, t)
     return t
 
@@ -59,7 +59,15 @@ def run(job: Job, *, settings: RoughCutSettings | None = None, polish_audio: boo
         wav = extract_audio(raw, Path(tmp) / "audio.wav")
         silences = detect_silences(wav, settings.silence_db, settings.min_silence_s)
 
-    cl = build_cutlist(transcript["words"], silences, info.duration, settings)
+    words_per_s = len(transcript["words"]) / max(info.duration, 1e-6)
+    speech_clip = words_per_s >= settings.min_speech_density
+    if speech_clip:
+        cl = build_cutlist(transcript["words"], silences, info.duration, settings)
+    else:
+        # Music / b-roll / ambient clip: there is no speech to tighten, and "silence" removal
+        # would shred it. Keep everything; graphics, captions and music still apply.
+        cl = CutList(duration_raw=info.duration, keep=[(0.0, info.duration)], removed=[])
+        console.log(f"only {len(transcript['words'])} words in {info.duration:.0f}s; treating as a non-speech clip")
     write_json(job.cutlist, cl.to_dict())
     console.log(f"cut: {cl.duration_raw:.1f}s -> {cl.duration_cut:.1f}s, {len(cl.removed)} removals")
 
@@ -78,7 +86,7 @@ def run(job: Job, *, settings: RoughCutSettings | None = None, polish_audio: boo
     job.script.write_text(_script_markdown(job, transcript_cut, cl), encoding="utf-8")
 
     meta = {"duration_raw": cl.duration_raw, "duration_cut": cl.duration_cut,
-            "removals": len(cl.removed), "words": len(cut_words)}
+            "removals": len(cl.removed), "words": len(cut_words), "speech": speech_clip}
     job.mark("rough_cut", **meta)
     return meta
 

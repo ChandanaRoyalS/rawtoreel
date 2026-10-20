@@ -65,6 +65,10 @@ The first rough cut downloads the Whisper `small` model (~500 MB) into `~/.cache
 It runs on CPU at roughly real time; set `"model": "base"` in `presets/rough-cut.json` for faster,
 rougher transcripts, or `"medium"` for better ones.
 
+English-only clips can use NVIDIA's Parakeet-TDT instead (`pip install -e ".[parakeet]"`, then
+`"engine": "parakeet"` in `presets/rough-cut.json`): about 8x faster than Whisper on CPU with
+token-level timestamps, fetched once (~480 MB) from the sherpa-onnx GitHub release.
+
 No footage handy? `pip install piper-tts && rawtoreel sample` generates a narrated test clip with
 fillers, a restarted sentence and long pauses baked in; it is what CI runs on.
 
@@ -148,8 +152,9 @@ tests/                pytest
 
 ## Limits
 
-- Built for one speaker talking to camera. Multi-camera, screen recordings with no narration, and
-  music videos are out of scope.
+- Built for one speaker talking to camera. A clip with little or no speech (b-roll, an event, a
+  montage) is detected and passed through uncut, with graphics and music still applied; nothing
+  is tightened automatically in that case.
 - "Repeat" detection sees repeated *words*; a purely visual retake with different wording is not caught.
 - Vertical formats reframe the whole frame (crop or blurred pad); there is no face tracking yet.
 - Overlay rendering is CPU-bound Chromium: expect roughly 20-40 s per minute of overlay on a laptop.

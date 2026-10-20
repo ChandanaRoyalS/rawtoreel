@@ -75,20 +75,20 @@ def _version(version: bool = typer.Option(False, "--version", is_eager=True)) ->
 
 @app.command()
 def intake(job: str, clip: Path, title: str = typer.Option(None, help="Title shown on the title card"),
-           speaker: str = typer.Option(None), role: str = typer.Option(None)) -> None:
+           subtitle: str = typer.Option(None, help="Smaller line under the title"),
+           speaker: str = typer.Option(None, help="Name on the lower third"),
+           role: str = typer.Option(None, help="Role/place under the name")) -> None:
     """Step 1: copy a raw clip into projects/<job>/raw/."""
     from .steps import intake as intake_step
 
     j = Job(job)
     j.dir.mkdir(parents=True, exist_ok=True)
     meta = intake_step.run(j, clip, title=title)
-    if speaker or role:
-        m = j.read_manifest()
-        if speaker:
-            m["speaker"] = speaker
-        if role:
-            m["role"] = role
-        j.write_manifest(m)
+    m = j.read_manifest()
+    for key, val in (("speaker", speaker), ("role", role), ("subtitle", subtitle)):
+        if val:
+            m[key] = val
+    j.write_manifest(m)
     console.print(f"[green]intake ok[/] {meta['file']} {meta['width']}x{meta['height']} {meta['duration']:.1f}s")
 
 

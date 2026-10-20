@@ -19,6 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8.0", "ruff>=0.5"]
+parakeet = ["sherpa-onnx>=1.12", "numpy>=1.26"]
 
 [project.scripts]
 rawtoreel = "rawtoreel.cli:app"

@@ -1,12 +1,23 @@
 {
+  "engine": "faster-whisper",
   "model": "small",
   "language": null,
-  "filler_words": ["um", "uh", "umm", "uhh", "erm", "hmm", "mm", "ah"],
+  "filler_words": [
+    "um",
+    "uh",
+    "umm",
+    "uhh",
+    "erm",
+    "hmm",
+    "mm",
+    "ah"
+  ],
   "silence_db": -35.0,
   "min_silence_s": 0.7,
   "keep_pause_s": 0.25,
   "repeat_min_words": 3,
   "repeat_window_s": 12.0,
   "min_segment_s": 0.4,
-  "pad_s": 0.06
+  "pad_s": 0.06,
+  "min_speech_density": 0.25
 }
